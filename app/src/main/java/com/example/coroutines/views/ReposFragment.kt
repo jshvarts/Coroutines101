@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.coroutines.CoroutinesApp
 import com.example.coroutines.R
-import com.example.coroutines.domain.GithubRepo
 import kotlinx.android.synthetic.main.repos_fragment.*
 import javax.inject.Inject
 
@@ -35,13 +34,12 @@ class ReposFragment : Fragment() {
     return inflater.inflate(R.layout.repos_fragment, container, false)
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
 
-    val reposObserver = Observer<List<GithubRepo>> { repos ->
-      reposRecyclerView.adapter = ReposAdapter(repos)
-    }
-    viewModel.repos.observe(this, reposObserver)
+    viewModel.repos.observe(viewLifecycleOwner, Observer {
+      reposRecyclerView.adapter = ReposAdapter(it)
+    })
 
     viewModel.lookupRepos()
   }
