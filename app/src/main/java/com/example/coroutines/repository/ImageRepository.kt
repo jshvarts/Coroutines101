@@ -19,7 +19,9 @@ class ImageRepository @Inject constructor() {
     Timber.d("Downloading image $url")
 
     return withContext(Dispatchers.IO) {
-      BitmapFactory.decodeStream(url.openConnection().getInputStream())
+      url.openStream().use {
+        BitmapFactory.decodeStream(it)
+      }
     }
   }
 }
