@@ -8,18 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.coroutines.CoroutinesApp
 import com.example.coroutines.R
-import com.example.coroutines.domain.GithubRepo
-import kotlinx.android.synthetic.main.repos_fragment.*
+import kotlinx.android.synthetic.main.images_fragment.*
 import javax.inject.Inject
 
-class ReposFragment : Fragment() {
+class ImagesFragment : Fragment() {
 
   companion object {
-    fun newInstance() = ReposFragment()
+    fun newInstance() = ImagesFragment()
   }
 
   @Inject
-  lateinit var viewModel: ReposViewModel
+  lateinit var viewModel: ImagesViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -32,17 +31,17 @@ class ReposFragment : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    return inflater.inflate(R.layout.repos_fragment, container, false)
+    return inflater.inflate(R.layout.images_fragment, container, false)
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
 
-    val reposObserver = Observer<List<GithubRepo>> { repos ->
-      reposRecyclerView.adapter = ReposAdapter(repos)
-    }
-    viewModel.repos.observe(this, reposObserver)
+    viewModel.images.observe(viewLifecycleOwner, Observer {
+      image1.setImageBitmap(it.first)
+      image2.setImageBitmap(it.second)
+    })
 
-    viewModel.lookupRepos()
+    viewModel.lookupImages()
   }
 }
