@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.coroutines.CoroutinesApp
 import com.example.coroutines.R
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.images_fragment.*
 import javax.inject.Inject
 
@@ -40,6 +41,12 @@ class ImagesFragment : Fragment() {
     viewModel.images.observe(viewLifecycleOwner, Observer {
       image1.setImageBitmap(it.first)
       image2.setImageBitmap(it.second)
+    })
+
+    viewModel.isError.observe(viewLifecycleOwner, Observer {
+      if (it) {
+        Snackbar.make(view!!, R.string.image_download_error, Snackbar.LENGTH_LONG).show()
+      }
     })
 
     viewModel.lookupImages()

@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.net.URL
 import javax.inject.Inject
+import kotlin.random.Random
 
 private const val BASE_IMAGE_URL = "https://images.unsplash.com/"
 
@@ -20,6 +21,10 @@ class ImageRepository @Inject constructor() {
 
     return withContext(Dispatchers.IO) {
       url.openStream().use {
+        val isError = Random.nextBoolean()
+        if (isError) {
+          throw RuntimeException("oops!")
+        }
         BitmapFactory.decodeStream(it)
       }
     }

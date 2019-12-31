@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Coroutines-101</string>
+    <string name="image_download_error">Image download error</string>
 </resources>
