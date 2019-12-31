@@ -6,11 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coroutines.repository.ImageRepository
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
-import kotlin.system.measureTimeMillis
 
 class ImagesViewModel @Inject constructor(private val imageRepository: ImageRepository) :
   ViewModel() {
@@ -22,19 +19,13 @@ class ImagesViewModel @Inject constructor(private val imageRepository: ImageRepo
 
   fun lookupImages() {
     viewModelScope.launch {
-      val time = measureTimeMillis {
-        val image1 = async {
-          imageRepository.downloadImage("photo-1577711456630-1daf4a628e46?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEwODczNX0")
-        }
+      val image1 =
+        imageRepository.downloadImage("photo-1577711456630-1daf4a628e46?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEwODczNX0")
 
-        val image2 = async {
-          imageRepository.downloadImage("photo-1562886877-0be0db6aba84?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEwODczNX0")
-        }
+      val image2 =
+        imageRepository.downloadImage("photo-1562886877-0be0db6aba84?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEwODczNX0")
 
-        _images.value = Pair(image1.await(), image2.await())
-      }
-
-      Timber.d("Measured time: $time") // avg 220 ms
+      _images.value = Pair(image1, image2)
     }
   }
 }
