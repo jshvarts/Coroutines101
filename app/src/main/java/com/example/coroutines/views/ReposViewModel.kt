@@ -20,7 +20,7 @@ class ReposViewModel @Inject constructor(private val githubApi: GithubApi) : Vie
     get() = _repos
 
   fun lookupRepos() {
-    githubApi.getRepos("jshvarts")
+    val disposable = githubApi.getRepos("jshvarts")
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(
@@ -31,8 +31,12 @@ class ReposViewModel @Inject constructor(private val githubApi: GithubApi) : Vie
           Timber.e(it)
         }
       )
-      .also {
-        compositedDisposable.add(it)
-      }
+
+    compositedDisposable.add(disposable)
+  }
+
+  override fun onCleared() {
+    super.onCleared()
+    compositedDisposable.clear()
   }
 }
