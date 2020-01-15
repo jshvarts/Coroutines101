@@ -17,10 +17,10 @@ abstract class ViewModelModule {
   @Binds
   @IntoMap
   @ViewModelKey(ImagesViewModel::class)
-  abstract fun bindReposViewModel(view: ImagesViewModel): ViewModel
+  abstract fun bindImagesViewModel(view: ImagesViewModel): ViewModel
 
   @Binds
-  abstract fun bindReposViewModelFactory(factory: ImagesViewModelFactory): ViewModelProvider.Factory
+  abstract fun bindImagesViewModelFactory(factory: ImagesViewModelFactory): ViewModelProvider.Factory
 }
 
 @MustBeDocumented
