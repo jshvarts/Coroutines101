@@ -12,4 +12,5 @@ The examples that illustrate error handling randomly throw an Exception that get
 * [Coroutines using `async`/`await`](https://github.com/jshvarts/Coroutines101/tree/images-async): Load two images over the network **asynchronously**
 * [Coroutines using `CoroutineExceptionHandler`](https://github.com/jshvarts/Coroutines101/tree/images-sync-handle-exceptions): Load two images over the network synchronously and handle exceptions using custom `CoroutineExceptionHandler`
 * [Coroutines using `try`/`catch`](https://github.com/jshvarts/Coroutines101/tree/images-sync-try-catch): Load two images synchronously over the network and handle exceptions using `try`/`catch`
-* [Coroutines using `async` and `try`/`catch`](https://github.com/jshvarts/Coroutines101/tree/images-async-try-catch): Load two images **asynchronously** over the network and handle exceptions using `try`/`catch` if any of the images fail.
+* [Coroutines using `async` and `try`/`catch`](https://github.com/jshvarts/Coroutines101/tree/images-async-try-catch): Load two images **asynchronously** over the network and handle exceptions using `try`/`catch` if any of the images fail to load.
+First image to fail will cancel its parent job which will cancel the rest of its children (in this case, the other image loading).
