@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.coroutines.CoroutinesApp
+import com.example.coroutines.LoadImagesApp
 import com.example.coroutines.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.images_fragment.*
@@ -27,7 +27,7 @@ class ImagesFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    (requireActivity().application as CoroutinesApp)
+    (requireActivity().application as LoadImagesApp)
       .appComponent
       .inject(this)
   }
@@ -49,7 +49,7 @@ class ImagesFragment : Fragment() {
 
     viewModel.isError.observe(viewLifecycleOwner, Observer {
       if (it) {
-        Snackbar.make(view!!, R.string.image_download_error, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(requireView(), R.string.image_download_error, Snackbar.LENGTH_LONG).show()
       }
     })
 
