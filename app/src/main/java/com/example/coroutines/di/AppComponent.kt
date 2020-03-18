@@ -7,12 +7,18 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class, ViewModelModule::class])
+@Component(
+    modules = [
+        NetworkModule::class,
+        ThreadingModule::class,
+        ViewModelModule::class
+    ]
+)
 interface AppComponent {
-  @Component.Factory
-  interface Factory {
-    fun create(@BindsInstance application: Application): AppComponent
-  }
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance application: Application): AppComponent
+    }
 
-  fun inject(fragment: UserDetailFragment)
+    fun inject(fragment: UserDetailFragment)
 }

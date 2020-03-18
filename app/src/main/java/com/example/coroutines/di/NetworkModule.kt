@@ -12,20 +12,20 @@ private const val GITHUB_BASE_URL = "https://api.github.com/"
 
 @Module
 class NetworkModule {
-  @Provides
-  fun provideRetrofit(): ApiService {
-    val loggingInterceptor = HttpLoggingInterceptor().apply {
-      level = HttpLoggingInterceptor.Level.BODY
+    @Provides
+    fun provideRetrofit(): ApiService {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val okHttpBuilder = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+
+        return Retrofit.Builder()
+            .baseUrl(GITHUB_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .client(okHttpBuilder.build())
+            .build()
+            .create(ApiService::class.java)
     }
-
-    val okHttpBuilder = OkHttpClient.Builder()
-      .addInterceptor(loggingInterceptor)
-
-    return Retrofit.Builder()
-      .baseUrl(GITHUB_BASE_URL)
-      .addConverterFactory(MoshiConverterFactory.create())
-      .client(okHttpBuilder.build())
-      .build()
-      .create(ApiService::class.java)
-  }
 }
