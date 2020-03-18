@@ -2,7 +2,7 @@ package com.example.coroutines
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.coroutines.views.ReposFragment
+import com.example.coroutines.views.UserDetailFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
-        .replace(R.id.container, ReposFragment.newInstance())
+        .replace(R.id.container, UserDetailFragment.newInstance())
         .commitNow()
     }
   }

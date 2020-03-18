@@ -1,6 +1,6 @@
 package com.example.coroutines.di
 
-import com.example.coroutines.repository.GithubApi
+import com.example.coroutines.repository.ApiService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -13,7 +13,7 @@ private const val GITHUB_BASE_URL = "https://api.github.com/"
 @Module
 class NetworkModule {
   @Provides
-  fun provideRetrofit(): GithubApi {
+  fun provideRetrofit(): ApiService {
     val loggingInterceptor = HttpLoggingInterceptor().apply {
       level = HttpLoggingInterceptor.Level.BODY
     }
@@ -26,6 +26,6 @@ class NetworkModule {
       .addConverterFactory(MoshiConverterFactory.create())
       .client(okHttpBuilder.build())
       .build()
-      .create(GithubApi::class.java)
+      .create(ApiService::class.java)
   }
 }

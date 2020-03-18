@@ -10,19 +10,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.coroutines.CoroutinesApp
 import com.example.coroutines.R
-import kotlinx.android.synthetic.main.repos_fragment.*
 import javax.inject.Inject
 
-class ReposFragment : Fragment() {
+class UserDetailFragment : Fragment() {
 
   companion object {
-    fun newInstance() = ReposFragment()
+    fun newInstance() = UserDetailFragment()
   }
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
 
-  private val viewModel: ReposViewModel by viewModels { viewModelFactory }
+  private val viewModel: UserDetailViewModel by viewModels { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -35,16 +34,20 @@ class ReposFragment : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    return inflater.inflate(R.layout.repos_fragment, container, false)
+    return inflater.inflate(R.layout.user_details_fragment, container, false)
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    viewModel.repos.observe(viewLifecycleOwner, Observer {
-      reposRecyclerView.adapter = ReposAdapter(it)
+    viewModel.userDetails.observe(viewLifecycleOwner, Observer {
+      println("success getting user details: $it")
     })
 
-    viewModel.lookupRepos()
+    viewModel.isError.observe(viewLifecycleOwner, Observer {
+      println("error getting user details: $it")
+    })
+
+    viewModel.lookupUser()
   }
 }
