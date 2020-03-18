@@ -7,5 +7,5 @@ import retrofit2.http.Path
 interface ApiService {
 
   @GET("users/{login}")
-  suspend fun userDetails(@Path("login") id: String): UserDetails
+  suspend fun userDetails(@Path("login") login: String): UserDetails
 }

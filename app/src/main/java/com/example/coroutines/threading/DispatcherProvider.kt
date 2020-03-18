@@ -2,7 +2,6 @@ package com.example.coroutines.threading
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 
 // alternatively, use https://github.com/RBusarow/Dispatch
 
@@ -13,4 +12,4 @@ interface DispatcherProvider {
     fun unconfined(): CoroutineDispatcher = Dispatchers.Unconfined
 }
 
-class DefaultDispatcherProvider @Inject constructor() : DispatcherProvider
+class DefaultDispatcherProvider : DispatcherProvider
