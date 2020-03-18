@@ -7,8 +7,6 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -16,11 +14,10 @@ import java.io.IOException
 
 class UserRepositoryTest {
 
-    private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
     private val testDispatcherProvider = TestDispatcherProvider()
 
     @Test
-    fun `should get user details on success`() = testDispatcher.runBlockingTest {
+    fun `should get user details on success`() = testDispatcherProvider.runBlockingTest {
         val userDetails = UserDetails(
             login = "someUsername",
             id = 1,
@@ -41,7 +38,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    fun `should get error for user details`() = testDispatcher.runBlockingTest {
+    fun `should get error for user details`() = testDispatcherProvider.runBlockingTest {
         val apiService = mock<ApiService> {
             onBlocking { userDetails("someUsername") } doAnswer {
                 throw IOException()
@@ -58,7 +55,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    fun `should retry with error and retry failed`() = testDispatcher.runBlockingTest {
+    fun `should retry with error and retry failed`() = testDispatcherProvider.runBlockingTest {
         val apiService = mock<ApiService> {
             onBlocking { userDetails("someUsername") } doAnswer {
                 throw IOException()
