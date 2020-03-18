@@ -2,6 +2,7 @@ package com.example.coroutines.repository
 
 import com.example.coroutines.domain.UserDetails
 import com.example.coroutines.threading.CoroutineTestRule
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.flow.single
@@ -10,6 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import java.io.IOException
 
 class UserRepositoryTest {
     @get:Rule
@@ -34,5 +36,22 @@ class UserRepositoryTest {
 
         assertTrue("user details call is success", result.isSuccess)
         assertEquals(userDetails, result.getOrNull())
+    }
+
+    @Test
+    fun `should get error for user details`() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val apiService = mock<ApiService> {
+            onBlocking { userDetails("someUsername") } doAnswer {
+                throw IOException()
+            }
+        }
+
+        val repository = UserRepository(apiService, coroutinesTestRule.testDispatcherProvider)
+
+        val flow = repository.userDetails("someUsername")
+
+        val result: Result<UserDetails> = flow.single()
+
+        assertTrue("user details call is success", result.isSuccess)
     }
 }

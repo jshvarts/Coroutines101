@@ -4,6 +4,7 @@ import com.example.coroutines.domain.UserDetails
 import com.example.coroutines.threading.DispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
@@ -17,6 +18,8 @@ class UserRepository(
         return flow {
             val userDetails = apiService.userDetails(login)
             emit(Result.success(userDetails))
-        }.flowOn(dispatchers.io())
+        }
+            .catch { emit(Result.failure(it)) }
+            .flowOn(dispatchers.io())
     }
 }
