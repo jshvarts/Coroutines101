@@ -5,9 +5,9 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 
-class TestDispatcherProvider : DispatcherProvider {
-    private val dispatcher = TestCoroutineDispatcher()
-
+class TestDispatcherProvider(
+    private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+) : DispatcherProvider {
     override fun default(): CoroutineDispatcher = dispatcher
     override fun io(): CoroutineDispatcher = dispatcher
     override fun main(): CoroutineDispatcher = dispatcher
