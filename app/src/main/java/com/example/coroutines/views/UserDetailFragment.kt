@@ -48,6 +48,6 @@ class UserDetailFragment : Fragment() {
       println("error getting user details: $it")
     })
 
-    viewModel.lookupUser()
+    viewModel.lookupUser("jshvarts")
   }
 }

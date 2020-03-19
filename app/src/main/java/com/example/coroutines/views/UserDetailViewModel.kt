@@ -12,30 +12,31 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UserDetailViewModel @Inject constructor(
-  private val userRepository: UserRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
-  private val _userDetails = MutableLiveData<UserDetails>()
+    private val _userDetails = MutableLiveData<UserDetails>()
 
-  val userDetails: LiveData<UserDetails>
-    get() = _userDetails
+    val userDetails: LiveData<UserDetails>
+        get() = _userDetails
 
-  private val _isError = MutableLiveData<Boolean>()
 
-  val isError: LiveData<Boolean>
-    get() = _isError
+    private val _isError = MutableLiveData<Boolean>()
 
-  @ExperimentalCoroutinesApi
-  fun lookupUser() {
+    val isError: LiveData<Boolean>
+        get() = _isError
 
-    viewModelScope.launch {
-      val flow = userRepository.userDetails("jshvarts")
-      flow.collect { result: Result<UserDetails> ->
-        when {
-          result.isSuccess -> _userDetails.value = result.getOrThrow()
-          result.isFailure -> _isError.value = true
+    @ExperimentalCoroutinesApi
+    fun lookupUser(login: String) {
+
+        viewModelScope.launch {
+            val flow = userRepository.userDetails(login)
+            flow.collect { result: Result<UserDetails> ->
+                when {
+                    result.isSuccess -> _userDetails.value = result.getOrNull()
+                    result.isFailure -> _isError.value = true
+                }
+            }
         }
-      }
     }
-  }
 }

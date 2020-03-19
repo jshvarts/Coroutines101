@@ -28,14 +28,17 @@ class UserDetailViewModelTest {
 
     private val repository = mock<UserRepository>()
 
-    private val observer = mock<Observer<UserDetails>>()
+    private val userDetailsObserver = mock<Observer<UserDetails>>()
+
+    private val isErrorObserver = mock<Observer<Boolean>>()
 
     private lateinit var userDetailViewModel: UserDetailViewModel
 
     @Before
     fun setUp() {
         userDetailViewModel = UserDetailViewModel(repository).apply {
-            userDetails.observeForever(observer)
+            userDetails.observeForever(userDetailsObserver)
+            isError.observeForever(isErrorObserver)
         }
     }
 
@@ -61,6 +64,27 @@ class UserDetailViewModelTest {
 
         userDetailViewModel.lookupUser(TEST_LOGIN)
 
-        verify(observer).onChanged(userDetails)
+        verify(userDetailsObserver).onChanged(userDetails)
+    }
+
+    @Test
+    fun `should emit error on failure`() = rule.dispatcher.runBlockingTest {
+        val isError = true
+
+        val result = Result.failure<UserDetails>(Exception())
+        val channel = Channel<Result<UserDetails>>()
+        val flow = channel.consumeAsFlow()
+
+        doReturn(flow)
+            .whenever(repository)
+            .userDetails(login = TEST_LOGIN)
+
+        launch {
+            channel.send(result)
+        }
+
+        userDetailViewModel.lookupUser(TEST_LOGIN)
+
+        verify(isErrorObserver).onChanged(isError)
     }
 }
