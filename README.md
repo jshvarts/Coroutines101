@@ -1,4 +1,4 @@
-# Kotlin Coroutines
+# Kotlin Coroutines on Android
 
 Some examples of how [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) can be used on Android in an app built using MVVM architecture.
 The examples that illustrate error handling randomly throw an Exception that gets caught and displayed by a `Snackbar`.
